@@ -1,0 +1,342 @@
+/* ============================================================
+   ANIMATIONS — Scroll Reveal & Entrance Effects
+   ============================================================ */
+
+/* ---- REVEAL BASE STATES ---- */
+.reveal-up,
+.reveal-left,
+.reveal-right,
+.reveal-fade {
+    opacity: 0;
+    transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: var(--delay, 0s);
+}
+
+.reveal-up {
+    transform: translateY(40px);
+}
+
+.reveal-left {
+    transform: translateX(-50px);
+}
+
+.reveal-right {
+    transform: translateX(50px);
+}
+
+.reveal-fade {
+    transform: scale(0.97);
+}
+
+/* ---- REVEALED STATE (added by JS) ---- */
+.revealed {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* ---- HERO ENTRANCE (CSS-only, no JS needed) ---- */
+.hero-content {
+    animation: hero-slide-in 1s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.hero-image-wrapper {
+    animation: hero-image-in 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+@keyframes hero-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes hero-image-in {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ---- VISION BANNER ---- */
+.vision-banner.revealed {
+    transition-delay: 0.1s;
+}
+
+/* ---- NAVBAR LINK HOVER INDICATOR ---- */
+.nav-link {
+    position: relative;
+}
+
+.nav-link:not(.nav-cta)::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-teal);
+    border-radius: 2px;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.nav-link:not(.nav-cta):hover::after,
+.nav-link:not(.nav-cta).active::after {
+    left: 10%;
+    width: 80%;
+}
+
+/* ---- CARD SHIMMER EFFECT on hover ---- */
+.service-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(120deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.04) 50%,
+            transparent 100%);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+    pointer-events: none;
+}
+
+.service-card:hover::after {
+    left: 200%;
+}
+
+/* ---- PULSE on stat cards ---- */
+.hero-stat-card::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: calc(var(--radius-md) + 4px);
+    border: 1px solid rgba(45, 201, 201, 0.2);
+    animation: pulse-ring 3s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+}
+
+/* ---- GALLERY ITEM ENTRANCE ---- */
+.gallery-item {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.gallery-item:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+/* ---- PARTICLES (background dots in hero) ---- */
+.hero-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--accent-teal);
+    opacity: 0;
+    animation: particle-drift linear infinite;
+}
+
+@keyframes particle-drift {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.3;
+    }
+
+    90% {
+        opacity: 0.1;
+    }
+
+    100% {
+        transform: translateY(-120vh) translateX(40px);
+        opacity: 0;
+    }
+}
+
+/* ---- TIMELINE DOT PULSE ---- */
+.tl-dot {
+    animation: dot-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 6px var(--dot-color, var(--accent-teal));
+    }
+
+    50% {
+        box-shadow: 0 0 18px var(--dot-color, var(--accent-teal));
+    }
+}
+
+/* ---- CONTACT ICON INTERACTION ---- */
+.contact-icon-wrap {
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover .contact-icon-wrap {
+    background: var(--accent-teal);
+    color: #000;
+    transform: scale(1.1);
+}
+
+/* ---- SECTION DIVIDERS (gold gradient lines) ---- */
+.about::after,
+.services::after,
+.credentials::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(240, 165, 0, 0.2), transparent);
+    margin-top: 0;
+}
+
+/* ---- PAGE LOADER ---- */
+#page-loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-primary);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+#page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-teal), var(--accent-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: loader-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loader-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loader-bar {
+    width: 200px;
+    height: 3px;
+    background: var(--border-subtle);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.loader-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-teal), var(--accent-green));
+    border-radius: 3px;
+    animation: loader-fill 1.4s ease-in-out forwards;
+}
+
+@keyframes loader-fill {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* ---- QUOTE CARD BORDER ANIMATION ---- */
+.featured-quote {
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-quote::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-teal), var(--accent-green), var(--accent-gold));
+    animation: gradient-shift 4s linear infinite;
+    background-size: 200% 100%;
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 200% 0%;
+    }
+}
+
+/* ---- SMOOTH SECTION TRANSITIONS ---- */
+section {
+    transition: background-color 0.3s ease;
+}
+
+/* ---- MOBILE HAMBURGER ANIMATION ---- */
+.hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
